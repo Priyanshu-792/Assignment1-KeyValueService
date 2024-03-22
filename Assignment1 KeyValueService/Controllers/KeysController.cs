@@ -19,7 +19,8 @@ namespace Assignment1_KeyValueService.Controllers
 
         [HttpGet("{key}")]
         public async Task<IActionResult> Get(string key)
-        {
+
+        { // Retrieve the key-value pair from the database by the given key
             var keyValue = await _context.CustomKeyValuePairs.FirstOrDefaultAsync(kvp => kvp.Key == key);
 
             if (keyValue != null)
@@ -35,7 +36,7 @@ namespace Assignment1_KeyValueService.Controllers
         [HttpPost]
         [HttpPut]
         public async Task<IActionResult> PostOrPut(CustomKeyValuePair model)
-        {
+        {  // Check if the key already exists in the database If key already exists, return 409 Conflict
             var existingKeyValuePair = await _context.CustomKeyValuePairs.FirstOrDefaultAsync(kvp => kvp.Key == model.Key);
 
             if (existingKeyValuePair != null)
@@ -51,7 +52,7 @@ namespace Assignment1_KeyValueService.Controllers
 
         [HttpPatch("{key}/{value}")]
         public async Task<IActionResult> Patch(string key, string value)
-        {
+        {  // Retrieve the key-value pair from the database by the given key
             var existingKeyValuePair = await _context.CustomKeyValuePairs.FirstOrDefaultAsync(kvp => kvp.Key == key);
 
             if (existingKeyValuePair == null)
@@ -77,7 +78,7 @@ namespace Assignment1_KeyValueService.Controllers
 
             _context.CustomKeyValuePairs.Remove(existingKeyValuePair);
             await _context.SaveChangesAsync();
-
+            // Return 204 No Content indicating successful deletion
             return NoContent();
         }
     }
